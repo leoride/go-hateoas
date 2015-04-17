@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// Test resource
 type testResource struct {
 	Id string
 }
@@ -16,6 +17,7 @@ func (r testResource) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+// Test resource handler
 type testResourceHandler struct {
 }
 
@@ -47,6 +49,7 @@ func (rh testResourceHandler) Delete(string) *Error {
 	return nil
 }
 
+// This test runs: go to http://localhost:8080/api/resources to test
 func TestHandle(t *testing.T) {
 	testResourceHandler := testResourceHandler{}
 	Handle("/api", testResourceHandler)
