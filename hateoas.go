@@ -56,26 +56,48 @@ func handle(w http.ResponseWriter, r *http.Request, id string) *Error {
 
 	switch r.Method {
 	case "GET":
-		fmt.Println("GET request")
+		if id == "" {
+			fmt.Println("GET request (all)")
+		} else {
+			fmt.Println("GET request (single resource)", id)
+		}
 		break
 
 	case "POST":
-		fmt.Println("POST request")
+		if id == "" {
+			fmt.Println("POST request (create)")
+		} else {
+			err = &Error{}
+			err.Status = 500
+			err.Code = 1
+			err.Message = "Invalid request. Resource could not be created."
+			err.DeveloperMessage = "Request for resource is incorrect. No path parameters are needed for creating a resource."
+		}
 		break
 
 	case "PUT":
-		fmt.Println("PUT request")
+		if id == "" {
+			err = &Error{}
+			err.Status = 500
+			err.Code = 1
+			err.Message = "Invalid request. Resource could not be updated."
+			err.DeveloperMessage = "Request for resource is incorrect. A path parameter (ID) is needed for updating a resource."
+		} else {
+			fmt.Println("PUT request (update resource)", id)
+		}
 		break
 
 	case "DELETE":
-		fmt.Println("DELETE request")
+		if id == "" {
+			err = &Error{}
+			err.Status = 500
+			err.Code = 1
+			err.Message = "Invalid request. Resource could not be deleted."
+			err.DeveloperMessage = "Request for resource is incorrect. A path parameter (ID) is needed for deleting a resource."
+		} else {
+			fmt.Println("DELETE request (delete resource)", id)
+		}
 		break
-	}
-
-	if id == "" {
-		fmt.Println("No resource ID found")
-	} else {
-		fmt.Println("Resource ID requested", id)
 	}
 
 	return err
