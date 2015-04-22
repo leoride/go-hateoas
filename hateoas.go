@@ -48,30 +48,30 @@ func errorWrapper(rootPathLength int, rh ResourceHandler) func(w http.ResponseWr
 func handle(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id string) *Error {
 	var err *Error
 
-    //TODO: remove this block
+	//TODO: remove this block
 	err = &Error{}
 	err.Status = 500
 	err.Code = 1
 	err.Message = "Under construction. Please check again later."
 	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
 
-    fmt.Println("Request received", r.RequestURI)
+	fmt.Println("Request received", r.RequestURI)
 
 	switch r.Method {
 	case "GET":
 		if id == "" {
 			fmt.Println("GET request (all)")
-            err = handleGetAll(w, r, rh)
+			err = handleGetAll(w, r, rh)
 		} else {
 			fmt.Println("GET request (single resource)", id)
-            err = handleGetOne(w, r, rh, id)
+			err = handleGetOne(w, r, rh, id)
 		}
 		break
 
 	case "POST":
 		if id == "" {
 			fmt.Println("POST request (create)")
-            err = handleCreate(w, r, rh)
+			err = handleCreate(w, r, rh)
 		} else {
 			err = &Error{}
 			err.Status = 500
@@ -90,7 +90,7 @@ func handle(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id strin
 			err.DeveloperMessage = "Request for resource is incorrect. A path parameter (ID) is needed for updating a resource."
 		} else {
 			fmt.Println("PUT request (update resource)", id)
-            err = handleUpdate(w, r, rh, id)
+			err = handleUpdate(w, r, rh, id)
 		}
 		break
 
@@ -103,7 +103,7 @@ func handle(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id strin
 			err.DeveloperMessage = "Request for resource is incorrect. A path parameter (ID) is needed for deleting a resource."
 		} else {
 			fmt.Println("DELETE request (delete resource)", id)
-            err = handleDelete(w, r, rh, id)
+			err = handleDelete(w, r, rh, id)
 		}
 		break
 	}
@@ -112,61 +112,61 @@ func handle(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id strin
 }
 
 func handleCreate(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *Error {
-    var err *Error
+	var err *Error
 
-    err = &Error{}
-    err.Status = 500
-    err.Code = 1
-    err.Message = "Create is under construction. Please check again later."
-    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+	err = &Error{}
+	err.Status = 500
+	err.Code = 1
+	err.Message = "Create is under construction. Please check again later."
+	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
 
-    return err
+	return err
 }
 
 func handleUpdate(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id string) *Error {
-    var err *Error
+	var err *Error
 
-    err = &Error{}
-    err.Status = 500
-    err.Code = 1
-    err.Message = "Update is under construction. Please check again later."
-    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+	err = &Error{}
+	err.Status = 500
+	err.Code = 1
+	err.Message = "Update is under construction. Please check again later."
+	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
 
-    return err
+	return err
 }
 
 func handleDelete(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id string) *Error {
-    var err *Error
+	var err *Error
 
-    err = &Error{}
-    err.Status = 500
-    err.Code = 1
-    err.Message = "Delete is under construction. Please check again later."
-    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+	err = &Error{}
+	err.Status = 500
+	err.Code = 1
+	err.Message = "Delete is under construction. Please check again later."
+	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
 
-    return err
+	return err
 }
 
 func handleGetAll(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *Error {
-    var err *Error
+	var err *Error
 
-    err = &Error{}
-    err.Status = 500
-    err.Code = 1
-    err.Message = "Get all is under construction. Please check again later."
-    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+	err = &Error{}
+	err.Status = 500
+	err.Code = 1
+	err.Message = "Get all is under construction. Please check again later."
+	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
 
-    return err
+	return err
 }
 
 func handleGetOne(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id string) *Error {
-    var err *Error
+	var err *Error
 
-    err = &Error{}
-    err.Status = 500
-    err.Code = 1
-    err.Message = "Get one is under construction. Please check again later."
-    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+	err = &Error{}
+	err.Status = 500
+	err.Code = 1
+	err.Message = "Get one is under construction. Please check again later."
+	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
 
-    return err
+	return err
 }
