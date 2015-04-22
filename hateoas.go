@@ -13,12 +13,12 @@ func Handle(apiPath string, rh ResourceHandler) error {
 	location := fmt.Sprint(apiPath, "/", rh.ResourceName(), "/")
 	rootPathLength := len(location)
 
-	http.HandleFunc(location, errorWrapper(rootPathLength))
+	http.HandleFunc(location, errorWrapper(rootPathLength, rh))
 
 	return err
 }
 
-func errorWrapper(rootPathLength int) func(w http.ResponseWriter, r *http.Request) {
+func errorWrapper(rootPathLength int, rh ResourceHandler) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err *Error
 
@@ -33,7 +33,7 @@ func errorWrapper(rootPathLength int) func(w http.ResponseWriter, r *http.Reques
 		}
 
 		if err == nil {
-			err = handle(w, r, id)
+			err = handle(w, r, rh, id)
 		}
 
 		if err != nil {
@@ -45,27 +45,33 @@ func errorWrapper(rootPathLength int) func(w http.ResponseWriter, r *http.Reques
 	}
 }
 
-func handle(w http.ResponseWriter, r *http.Request, id string) *Error {
+func handle(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id string) *Error {
 	var err *Error
 
+    //TODO: remove this block
 	err = &Error{}
 	err.Status = 500
 	err.Code = 1
 	err.Message = "Under construction. Please check again later."
 	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
 
+    fmt.Println("Request received", r.RequestURI)
+
 	switch r.Method {
 	case "GET":
 		if id == "" {
 			fmt.Println("GET request (all)")
+            err = handleGetAll(w, r, rh)
 		} else {
 			fmt.Println("GET request (single resource)", id)
+            err = handleGetOne(w, r, rh, id)
 		}
 		break
 
 	case "POST":
 		if id == "" {
 			fmt.Println("POST request (create)")
+            err = handleCreate(w, r, rh)
 		} else {
 			err = &Error{}
 			err.Status = 500
@@ -84,6 +90,7 @@ func handle(w http.ResponseWriter, r *http.Request, id string) *Error {
 			err.DeveloperMessage = "Request for resource is incorrect. A path parameter (ID) is needed for updating a resource."
 		} else {
 			fmt.Println("PUT request (update resource)", id)
+            err = handleUpdate(w, r, rh, id)
 		}
 		break
 
@@ -96,9 +103,70 @@ func handle(w http.ResponseWriter, r *http.Request, id string) *Error {
 			err.DeveloperMessage = "Request for resource is incorrect. A path parameter (ID) is needed for deleting a resource."
 		} else {
 			fmt.Println("DELETE request (delete resource)", id)
+            err = handleDelete(w, r, rh, id)
 		}
 		break
 	}
 
 	return err
+}
+
+func handleCreate(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *Error {
+    var err *Error
+
+    err = &Error{}
+    err.Status = 500
+    err.Code = 1
+    err.Message = "Create is under construction. Please check again later."
+    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+
+    return err
+}
+
+func handleUpdate(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id string) *Error {
+    var err *Error
+
+    err = &Error{}
+    err.Status = 500
+    err.Code = 1
+    err.Message = "Update is under construction. Please check again later."
+    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+
+    return err
+}
+
+func handleDelete(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id string) *Error {
+    var err *Error
+
+    err = &Error{}
+    err.Status = 500
+    err.Code = 1
+    err.Message = "Delete is under construction. Please check again later."
+    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+
+    return err
+}
+
+func handleGetAll(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *Error {
+    var err *Error
+
+    err = &Error{}
+    err.Status = 500
+    err.Code = 1
+    err.Message = "Get all is under construction. Please check again later."
+    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+
+    return err
+}
+
+func handleGetOne(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id string) *Error {
+    var err *Error
+
+    err = &Error{}
+    err.Status = 500
+    err.Code = 1
+    err.Message = "Get one is under construction. Please check again later."
+    err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
+
+    return err
 }
