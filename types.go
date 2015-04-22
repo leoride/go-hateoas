@@ -41,8 +41,6 @@ type PageOpts struct {
 
 // Abstract interface for a REST resource
 type Resource interface {
-	MarshalJSON() ([]byte, error)
-	UnmarshalJSON(b []byte) error
 }
 
 // Abstract interface for a REST resource handler

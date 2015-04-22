@@ -10,13 +10,6 @@ type testResource struct {
 	Id string
 }
 
-func (r testResource) MarshalJSON() ([]byte, error) {
-	return nil, nil
-}
-func (r testResource) UnmarshalJSON(b []byte) error {
-	return nil
-}
-
 // Test resource handler
 type testResourceHandler struct {
 }
