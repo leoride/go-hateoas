@@ -17,6 +17,10 @@ type testResourceHandler struct {
 func (rh testResourceHandler) ResourceName() string {
 	return "resources"
 }
+func (rh testResourceHandler) Count() (int, error) {
+	return 10, nil
+}
+
 func (rh testResourceHandler) GetOne(id string) (Resource, *Error) {
 	testResource := testResource{}
 	return testResource, nil

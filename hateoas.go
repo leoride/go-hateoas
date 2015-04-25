@@ -37,6 +37,7 @@ func errorWrapper(rootPathLength int, rh ResourceHandler) func(w http.ResponseWr
 		}
 
 		if err != nil {
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			w.WriteHeader(err.Status)
 
 			errJson, _ := json.MarshalIndent(err, "", "    ")
@@ -47,15 +48,9 @@ func errorWrapper(rootPathLength int, rh ResourceHandler) func(w http.ResponseWr
 
 func handle(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id string) *Error {
 	var err *Error
-
-	//TODO: remove this block
-	err = &Error{}
-	err.Status = 500
-	err.Code = 1
-	err.Message = "Under construction. Please check again later."
-	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
-
 	fmt.Println("Request received", r.RequestURI)
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 
 	switch r.Method {
 	case "GET":
@@ -142,18 +137,6 @@ func handleDelete(w http.ResponseWriter, r *http.Request, rh ResourceHandler, id
 	err.Status = 500
 	err.Code = 1
 	err.Message = "Delete is under construction. Please check again later."
-	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
-
-	return err
-}
-
-func handleGetAll(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *Error {
-	var err *Error
-
-	err = &Error{}
-	err.Status = 500
-	err.Code = 1
-	err.Message = "Get all is under construction. Please check again later."
 	err.DeveloperMessage = "API is not ready yet. Please contact tomg@leoride.com for more information."
 
 	return err

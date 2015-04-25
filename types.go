@@ -26,10 +26,10 @@ type Page struct {
 	Href     Url
 	Offset   int
 	Limit    int
-	First    Url
-	Previous Url
-	Next     Url
-	Last     Url
+	First    *Url
+	Previous *Url
+	Next     *Url
+	Last     *Url
 	Items    []Resource
 }
 
@@ -52,4 +52,6 @@ type ResourceHandler interface {
 	Create(Resource) (string, *Error)
 	Update(string, Resource) (Resource, *Error)
 	Delete(string) *Error
+
+	Count() (int, error)
 }
