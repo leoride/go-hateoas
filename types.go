@@ -31,6 +31,8 @@ type Page struct {
 	Next     *Url
 	Last     *Url
 	Items    []Resource
+
+	TotalItems int
 }
 
 // PageOpts type for page options extracted from the GET parameters
@@ -53,5 +55,5 @@ type ResourceHandler interface {
 	Update(string, Resource) (Resource, *Error)
 	Delete(string) *Error
 
-	Count() (int, error)
+	Count() (int, *Error)
 }

@@ -7,7 +7,8 @@ import (
 
 // Test resource
 type testResource struct {
-	Id string
+	Id   string
+	Name string
 }
 
 // Test resource handler
@@ -17,8 +18,8 @@ type testResourceHandler struct {
 func (rh testResourceHandler) ResourceName() string {
 	return "resources"
 }
-func (rh testResourceHandler) Count() (int, error) {
-	return 10, nil
+func (rh testResourceHandler) Count() (int, *Error) {
+	return 5, nil
 }
 
 func (rh testResourceHandler) GetOne(id string) (Resource, *Error) {
@@ -26,14 +27,24 @@ func (rh testResourceHandler) GetOne(id string) (Resource, *Error) {
 	return testResource, nil
 }
 func (rh testResourceHandler) GetAll(pageOpts PageOpts) ([]Resource, *Error) {
-	testResources := []testResource{}
+	testResources := make([]testResource, 5)
+	testResources[0] = testResource{"1", "tomg"}
+	testResources[1] = testResource{"1", "jacqg"}
+	testResources[2] = testResource{"1", "isag"}
+	testResources[3] = testResource{"1", "marieg"}
+	testResources[4] = testResource{"1", "lylg"}
 
 	resources := make([]Resource, len(testResources))
+
+	i := 0
 	for index, value := range testResources {
-		resources[index] = value
+		if (pageOpts.Offset <= index) && (index < (pageOpts.Offset + pageOpts.Limit)) {
+			resources[i] = value
+			i++
+		}
 	}
 
-	return resources, nil
+	return resources[0:i], nil
 }
 func (rh testResourceHandler) Create(newR Resource) (string, *Error) {
 	return "", nil

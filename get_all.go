@@ -36,7 +36,13 @@ func handleGetAll(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *E
 	}
 
 	var resources []Resource
+	var count int
+
 	resources, err = rh.GetAll(pageOpts)
+
+	if err == nil {
+		count, err = rh.Count()
+	}
 
 	if err == nil {
 		first := Url("http://" + r.Host + r.URL.Path + "?page.offset=0&page.limit=" + fmt.Sprint(pageOpts.Limit))
@@ -46,6 +52,7 @@ func handleGetAll(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *E
 		page.Offset = pageOpts.Offset
 		page.Limit = pageOpts.Limit
 		page.First = &first
+		page.TotalItems = count
 
 		json, errJ := json.MarshalIndent(page, "", "    ")
 
