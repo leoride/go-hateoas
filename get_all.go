@@ -45,13 +45,19 @@ func handleGetAll(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *E
 	}
 
 	if err == nil {
-		first := Url("http://" + r.Host + r.URL.Path + "?page.offset=0&page.limit=" + fmt.Sprint(pageOpts.Limit))
+		first := getFirstUrl(r, pageOpts.Limit)
+		last := getLastUrl(r, pageOpts.Limit, pageOpts.Offset, count)
+		prev := getPrevUrl(r, pageOpts.Limit, pageOpts.Offset, count)
+		next := getNextUrl(r, pageOpts.Limit, pageOpts.Offset, count)
 
 		page.Items = resources
-		page.Href = Url("http://" + r.Host + r.RequestURI)
+		page.Href = getSelfUrl(r)
 		page.Offset = pageOpts.Offset
 		page.Limit = pageOpts.Limit
-		page.First = &first
+		page.First = first
+		page.Last = last
+		page.Previous = prev
+		page.Next = next
 		page.TotalItems = count
 
 		json, errJ := json.MarshalIndent(page, "", "    ")
@@ -72,4 +78,53 @@ func handleGetAll(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *E
 	}
 
 	return err
+}
+
+func getSelfUrl(r *http.Request) Url {
+	var url Url
+	url = Url("http://" + r.Host + r.RequestURI)
+	return url
+}
+
+func getFirstUrl(r *http.Request, limit int) *Url {
+	var url Url
+	url = Url("http://" + r.Host + r.URL.Path + "?page.offset=0&page.limit=" + fmt.Sprint(limit))
+	return &url
+}
+
+func getLastUrl(r *http.Request, limit int, offset int, count int) *Url {
+	var url Url
+	newOffset := (count / limit) * limit
+
+	if newOffset == count {
+		newOffset -= limit
+	}
+
+	url = Url("http://" + r.Host + r.URL.Path + "?page.offset=" + fmt.Sprint(newOffset) + "&page.limit=" + fmt.Sprint(limit))
+
+	return &url
+}
+
+func getPrevUrl(r *http.Request, limit int, offset int, count int) *Url {
+	var url Url
+
+	if (offset - limit) >= 0 {
+		newOffset := offset - limit
+		url = Url("http://" + r.Host + r.URL.Path + "?page.offset=" + fmt.Sprint(newOffset) + "&page.limit=" + fmt.Sprint(limit))
+		return &url
+	} else {
+		return nil
+	}
+}
+
+func getNextUrl(r *http.Request, limit int, offset int, count int) *Url {
+	var url Url
+
+	if (offset + limit) < count {
+		newOffset := offset + limit
+		url = Url("http://" + r.Host + r.URL.Path + "?page.offset=" + fmt.Sprint(newOffset) + "&page.limit=" + fmt.Sprint(limit))
+		return &url
+	} else {
+		return nil
+	}
 }

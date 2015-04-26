@@ -19,7 +19,7 @@ func (rh testResourceHandler) ResourceName() string {
 	return "resources"
 }
 func (rh testResourceHandler) Count() (int, *Error) {
-	return 5, nil
+	return 25, nil
 }
 
 func (rh testResourceHandler) GetOne(id string) (Resource, *Error) {
@@ -29,10 +29,10 @@ func (rh testResourceHandler) GetOne(id string) (Resource, *Error) {
 func (rh testResourceHandler) GetAll(pageOpts PageOpts) ([]Resource, *Error) {
 	testResources := make([]testResource, 5)
 	testResources[0] = testResource{"1", "tomg"}
-	testResources[1] = testResource{"1", "jacqg"}
-	testResources[2] = testResource{"1", "isag"}
-	testResources[3] = testResource{"1", "marieg"}
-	testResources[4] = testResource{"1", "lylg"}
+	testResources[1] = testResource{"2", "jacqg"}
+	testResources[2] = testResource{"3", "isag"}
+	testResources[3] = testResource{"4", "marieg"}
+	testResources[4] = testResource{"5", "lylg"}
 
 	resources := make([]Resource, len(testResources))
 
