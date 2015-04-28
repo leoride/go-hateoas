@@ -6,42 +6,55 @@ import (
 )
 
 // Test resource
-type testResource struct {
+type testResourceAnimal struct {
 	Id   string
 	Name string
 }
 
-func (tr testResource) GetId() string {
+func (tr testResourceAnimal) GetId() string {
+	return tr.Id
+}
+
+type testResourcePerson struct {
+	Id     string
+	Name   string
+	Animal testResourceAnimal
+}
+
+func (tr testResourcePerson) GetId() string {
 	return tr.Id
 }
 
 // Test resource handler
-type testResourceHandler struct {
+type testResourcePersonHandler struct {
 }
 
-func (rh testResourceHandler) ResourceName() string {
+func (rh testResourcePersonHandler) ResourceName() string {
 	return "resources"
 }
-func (rh testResourceHandler) Count() (int, *Error) {
+func (rh testResourcePersonHandler) Count() (int, *Error) {
 	return 25, nil
 }
 
-func (rh testResourceHandler) GetOne(id string) (Resource, *Error) {
-	testResource := testResource{}
-	return testResource, nil
+func (rh testResourcePersonHandler) GetOne(id string) (Resource, *Error) {
+	testResourcePerson := testResourcePerson{}
+	return testResourcePerson, nil
 }
-func (rh testResourceHandler) GetAll(pageOpts PageOpts) ([]Resource, *Error) {
-	testResources := make([]testResource, 5)
-	testResources[0] = testResource{"1", "tomg"}
-	testResources[1] = testResource{"2", "jacquesg"}
-	testResources[2] = testResource{"3", "isabelleg"}
-	testResources[3] = testResource{"4", "marieg"}
-	testResources[4] = testResource{"5", "lylwenng"}
+func (rh testResourcePersonHandler) GetAll(pageOpts PageOpts) ([]Resource, *Error) {
+	testResourcePersons := make([]testResourcePerson, 5)
 
-	resources := make([]Resource, len(testResources))
+	smoky := testResourceAnimal{"1", "smoky"}
+
+	testResourcePersons[0] = testResourcePerson{"1", "tomg", smoky}
+	testResourcePersons[1] = testResourcePerson{"2", "jacquesg", testResourceAnimal{}}
+	testResourcePersons[2] = testResourcePerson{"3", "isabelleg", testResourceAnimal{}}
+	testResourcePersons[3] = testResourcePerson{"4", "marieg", testResourceAnimal{}}
+	testResourcePersons[4] = testResourcePerson{"5", "lylwenng", testResourceAnimal{}}
+
+	resources := make([]Resource, len(testResourcePersons))
 
 	i := 0
-	for index, value := range testResources {
+	for index, value := range testResourcePersons {
 		if (pageOpts.Offset <= index) && (index < (pageOpts.Offset + pageOpts.Limit)) {
 			resources[i] = value
 			i++
@@ -50,20 +63,20 @@ func (rh testResourceHandler) GetAll(pageOpts PageOpts) ([]Resource, *Error) {
 
 	return resources[0:i], nil
 }
-func (rh testResourceHandler) Create(newR Resource) (string, *Error) {
+func (rh testResourcePersonHandler) Create(newR Resource) (string, *Error) {
 	return "", nil
 }
-func (rh testResourceHandler) Update(id string, updR Resource) (Resource, *Error) {
-	testResource := updR.(testResource)
-	return testResource, nil
+func (rh testResourcePersonHandler) Update(id string, updR Resource) (Resource, *Error) {
+	testResourcePerson := updR.(testResourcePerson)
+	return testResourcePerson, nil
 }
-func (rh testResourceHandler) Delete(string) *Error {
+func (rh testResourcePersonHandler) Delete(string) *Error {
 	return nil
 }
 
 // This test runs: go to http://localhost:8080/api/resources to test
 func TestHandle(t *testing.T) {
-	testResourceHandler := testResourceHandler{}
-	Handle("/api", testResourceHandler)
+	testResourcePersonHandler := testResourcePersonHandler{}
+	Handle("/api", testResourcePersonHandler)
 	http.ListenAndServe(":8080", nil)
 }
