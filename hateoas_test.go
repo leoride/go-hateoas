@@ -11,6 +11,10 @@ type testResource struct {
 	Name string
 }
 
+func (tr testResource) GetId() string {
+	return tr.Id
+}
+
 // Test resource handler
 type testResourceHandler struct {
 }
@@ -29,10 +33,10 @@ func (rh testResourceHandler) GetOne(id string) (Resource, *Error) {
 func (rh testResourceHandler) GetAll(pageOpts PageOpts) ([]Resource, *Error) {
 	testResources := make([]testResource, 5)
 	testResources[0] = testResource{"1", "tomg"}
-	testResources[1] = testResource{"2", "jacqg"}
-	testResources[2] = testResource{"3", "isag"}
+	testResources[1] = testResource{"2", "jacquesg"}
+	testResources[2] = testResource{"3", "isabelleg"}
 	testResources[3] = testResource{"4", "marieg"}
-	testResources[4] = testResource{"5", "lylg"}
+	testResources[4] = testResource{"5", "lylwenng"}
 
 	resources := make([]Resource, len(testResources))
 

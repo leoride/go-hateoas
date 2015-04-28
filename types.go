@@ -30,7 +30,7 @@ type Page struct {
 	Previous *Url
 	Next     *Url
 	Last     *Url
-	Items    []Resource
+	Items    []hateoasResource
 
 	TotalItems int
 }
@@ -43,6 +43,7 @@ type PageOpts struct {
 
 // Abstract interface for a REST resource
 type Resource interface {
+	GetId() string
 }
 
 // Abstract interface for a REST resource handler

@@ -50,7 +50,7 @@ func handleGetAll(w http.ResponseWriter, r *http.Request, rh ResourceHandler) *E
 		prev := getPrevUrl(r, pageOpts.Limit, pageOpts.Offset, count)
 		next := getNextUrl(r, pageOpts.Limit, pageOpts.Offset, count)
 
-		page.Items = resources
+		page.Items = toHateoasResources(resources, "http://"+r.Host+r.URL.Path)
 		page.Href = getSelfUrl(r)
 		page.Offset = pageOpts.Offset
 		page.Limit = pageOpts.Limit
